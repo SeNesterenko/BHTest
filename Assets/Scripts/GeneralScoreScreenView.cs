@@ -3,7 +3,7 @@ using System.Text;
 using TMPro;
 using UnityEngine;
 
-public class GeneralScoreView : MonoBehaviour
+public class GeneralScoreScreenView : MonoBehaviour
 {
     [SerializeField] private TMP_Text[] _playersScore;
     

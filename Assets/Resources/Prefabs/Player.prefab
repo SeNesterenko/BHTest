@@ -242,6 +242,7 @@ MonoBehaviour:
   _skill: {fileID: 7590780658086748057}
   _renderer: {fileID: 4130326619191492913}
   _collider: {fileID: 4130326619191492912}
+  _countScoreToWin: 3
 --- !u!114 &4130326619191492879
 MonoBehaviour:
   m_ObjectHideFlags: 0

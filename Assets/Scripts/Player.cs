@@ -10,6 +10,7 @@ public class Player : NetworkBehaviour
     [SerializeField] private Skill _skill;
     [SerializeField] private Renderer _renderer;
     [SerializeField] private Collider _collider;
+    [SerializeField] private int _countScoreToWin;
 
     private CinemachineFreeLook _playerCamera;
     private bool _isInvincible;
@@ -39,7 +40,7 @@ public class Player : NetworkBehaviour
         return _score;
     }
     
-    public void SetScore(int value)
+    public void IncreaseScore(int value)
     {
         if (isServer)
         {
@@ -47,7 +48,12 @@ public class Player : NetworkBehaviour
         }
         else
         {
-            CmdSetScore(value);
+            CmdIncreaseScore(value);
+        }
+
+        if (_score >= _countScoreToWin)
+        {
+            EventStreams.Game.Publish(new PlayerWonEvent(this));
         }
     }
 
@@ -84,7 +90,7 @@ public class Player : NetworkBehaviour
     }
     
     [Command]
-    private void CmdSetScore(int value)
+    private void CmdIncreaseScore(int value)
     {
         _score += value;
     }

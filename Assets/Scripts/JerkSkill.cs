@@ -33,7 +33,7 @@ public class JerkSkill : Skill
         if (otherCollider.gameObject.CompareTag(Tags.PLAYER))
         {
             CmdChangePlayerColor(otherCollider.gameObject.GetComponent<NetworkIdentity>().netId);
-            _player.SetScore(1);
+            _player.IncreaseScore(1);
         }
     }
 

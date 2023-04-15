@@ -1,16 +1,16 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-[RequireComponent(typeof(GeneralScoreView))]
-public class GeneralScoreController : MonoBehaviour
+[RequireComponent(typeof(GeneralScoreScreenView))]
+public class GeneralScoreScreenController : MonoBehaviour
 {
-    [SerializeField] private GeneralScoreView _generalScoreView;
+    [SerializeField] private GeneralScoreScreenView _generalScoreScreenView;
     
     private List<Player> _players = new();
 
     public void ChangeCountPlayers(List<Player> players)
     {
-        _generalScoreView.ResetScoreViews();
+        _generalScoreScreenView.ResetScoreViews();
         _players = players;
         
         var playerNames = new List<string>();
@@ -22,7 +22,7 @@ public class GeneralScoreController : MonoBehaviour
             playerScores.Add(player.GetScore().ToString());
         }
         
-        _generalScoreView.ActivateNewScoreView(playerScores, playerNames);
+        _generalScoreScreenView.ActivateNewScoreView(playerScores, playerNames);
     }
 
     private void Update()
@@ -30,7 +30,7 @@ public class GeneralScoreController : MonoBehaviour
         for (var i = 0; i < _players.Count; i++)
         {
             var player = _players[i];
-            _generalScoreView.Display(player.GetScore().ToString(), i, player.GetName());
+            _generalScoreScreenView.Display(player.GetScore().ToString(), i, player.GetName());
         }
     }
 }
