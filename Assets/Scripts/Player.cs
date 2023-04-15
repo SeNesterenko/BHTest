@@ -5,7 +5,6 @@ using UnityEngine;
 
 public class Player : NetworkBehaviour
 {
-    public string Name { get; private set; }
     public Renderer Renderer => _renderer;
 
     [SerializeField] private Skill _skill;
@@ -18,10 +17,21 @@ public class Player : NetworkBehaviour
     [SyncVar(hook = nameof(OnScoreChanged))]
     private int _score;
 
+    [SyncVar(hook = nameof(OnNameChanged))]
+    private string _name;
+
     [UsedImplicitly]
     public void ActivateSkill()
     {
         _skill.ActivateSkill();
+    }
+    
+    [ClientRpc]
+    public void ChangeState()
+    {
+        _isInvincible = !_isInvincible;
+
+        _collider.enabled = !_isInvincible;
     }
     
     public int GetScore()
@@ -41,12 +51,21 @@ public class Player : NetworkBehaviour
         }
     }
 
-    [ClientRpc]
-    public void ChangeState()
+    public string GetName()
     {
-        _isInvincible = !_isInvincible;
+        return _name;
+    }
 
-        _collider.enabled = !_isInvincible;
+    public void SetName(string playerName)
+    {
+        if (isServer)
+        {
+            _name = playerName;
+        }
+        else
+        {
+            CmdSetName(playerName);
+        }
     }
 
     private void Start()
@@ -67,6 +86,17 @@ public class Player : NetworkBehaviour
     [Command]
     private void CmdSetScore(int value)
     {
-        _score = value;
+        _score += value;
+    }
+
+    private void OnNameChanged(string oldValue, string newValue)
+    {
+        _name = newValue;
+    }
+
+    [Command]
+    private void CmdSetName(string playerName)
+    {
+        _name = playerName;
     }
 }

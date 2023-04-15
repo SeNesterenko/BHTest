@@ -18,7 +18,7 @@ public class GeneralScoreController : MonoBehaviour
         
         foreach (var player in _players)
         {
-            playerNames.Add(player.Name);
+            playerNames.Add(player.GetName());
             playerScores.Add(player.GetScore().ToString());
         }
         
@@ -30,7 +30,7 @@ public class GeneralScoreController : MonoBehaviour
         for (var i = 0; i < _players.Count; i++)
         {
             var player = _players[i];
-            _generalScoreView.Display(player.GetScore().ToString(), i, player.Name);
+            _generalScoreView.Display(player.GetScore().ToString(), i, player.GetName());
         }
     }
 }
