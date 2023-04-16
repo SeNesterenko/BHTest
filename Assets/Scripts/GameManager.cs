@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using Mirror;
 using SimpleEventBus.Disposables;
@@ -10,15 +11,18 @@ public class GameManager : NetworkBehaviour, IDisposable
     [SerializeField] private PlayerNameScreenController _playerNameScreenController;
     [SerializeField] private WinScreenController _winScreenController;
 
-    private readonly List<Player> _players = new ();
+    [SerializeField] private float _restartTime;
+
+    private List<Player> _players = new ();
     private CompositeDisposable _subscriptions;
 
     public void AddNewPlayer(Player player)
     {
         _players.Add(player);
         
-        ChangeCountPlayersForAllPlayers(_players);
-        InitializePlayerNameInputController(player);
+        RpcTransferPlayersListToClients(_players);
+        RpcChangeCountPlayersForAllPlayers(_players);
+        RpcInitializePlayerNameInputController(player);
     }
 
     private void Awake()
@@ -30,15 +34,21 @@ public class GameManager : NetworkBehaviour, IDisposable
     }
 
     [ClientRpc]
-    private void InitializePlayerNameInputController(Player player)
+    private void RpcInitializePlayerNameInputController(Player player)
     {
         _playerNameScreenController.Initialize(player, ActivatePlayer);
     }
     
     [ClientRpc]
-    private void ChangeCountPlayersForAllPlayers(List<Player> players)
+    private void RpcChangeCountPlayersForAllPlayers(List<Player> players)
     {
         _generalScoreScreenController.ChangeCountPlayers(players);
+    }
+
+    [ClientRpc]
+    private void RpcTransferPlayersListToClients(List<Player> players)
+    {
+        _players = players;
     }
     
     private void ActivatePlayer(Player player, string playerName)
@@ -49,28 +59,41 @@ public class GameManager : NetworkBehaviour, IDisposable
     
     private void InitializeEndGame(PlayerWonEvent eventData)
     {
-        if (!isServer || !NetworkServer.active)
-        {
-            return;
-        }
-        
+
         EndGame(eventData.Player);
     }
-
+    
     private void EndGame(Player player)
     {
-        _generalScoreScreenController.gameObject.SetActive(false);
-        _winScreenController.Initialize(player);
-
         RpcEndGame(player);
     }
 
     [ClientRpc]
     private void RpcEndGame(Player player)
     {
-        _generalScoreScreenController.gameObject.SetActive(false);
         _winScreenController.gameObject.SetActive(true);
+        
+        for (var i = 0; i < _players.Count; i++)
+        {
+            _players[i].RestScore();
+            _players[i].gameObject.SetActive(false);
+        }
+        
         _winScreenController.Initialize(player);
+        StartCoroutine(RespawnPlayers());
+    }
+    
+    private IEnumerator RespawnPlayers()
+    {
+        yield return new WaitForSeconds(_restartTime);
+        
+        foreach (var player in _players)
+        {
+            player.transform.position = player.StartPosition;
+            player.gameObject.SetActive(true);
+        }
+        
+        _winScreenController.gameObject.SetActive(false);
     }
 
     public void Dispose()

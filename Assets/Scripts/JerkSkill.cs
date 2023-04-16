@@ -12,7 +12,6 @@ public class JerkSkill : Skill
     
     [SerializeField] private float _colorDelay = 3f;
     [SerializeField] private Color _specialColor = Color.black;
-    [SerializeField] private Color _defaultColor = Color.white;
 
     private bool _isJerkState;
 
@@ -42,8 +41,8 @@ public class JerkSkill : Skill
     {
         var player = NetworkServer.spawned[playerId].gameObject.GetComponent<Player>();
 
+        player.RpcChangeState();
         RpcChangePlayerColor(player, _specialColor);
-        player.ChangeState();
         StartCoroutine(ResetPlayerColor(player));
     }
     
@@ -59,7 +58,6 @@ public class JerkSkill : Skill
     {
         yield return new WaitForSeconds(_colorDelay);
         
-        RpcChangePlayerColor(player, _defaultColor);
-        player.ChangeState();
+        player.RpcChangeState();
     }
 }

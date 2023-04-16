@@ -5,8 +5,11 @@ using UnityEngine;
 
 public class Player : NetworkBehaviour
 {
+    public Vector3 StartPosition { get; private set; }
+
     public Renderer Renderer => _renderer;
 
+    [SerializeField] private Color _defaultColor = Color.white;
     [SerializeField] private Skill _skill;
     [SerializeField] private Renderer _renderer;
     [SerializeField] private Collider _collider;
@@ -14,7 +17,7 @@ public class Player : NetworkBehaviour
 
     private CinemachineFreeLook _playerCamera;
     private bool _isInvincible;
-    
+
     [SyncVar(hook = nameof(OnScoreChanged))]
     private int _score;
 
@@ -28,11 +31,18 @@ public class Player : NetworkBehaviour
     }
     
     [ClientRpc]
+    public void RpcChangeState()
+    {
+        _isInvincible = !_isInvincible;
+        _collider.enabled = !_isInvincible;
+        _renderer.material.color = _defaultColor;
+    }
+    
     public void ChangeState()
     {
         _isInvincible = !_isInvincible;
-
         _collider.enabled = !_isInvincible;
+        _renderer.material.color = _defaultColor;
     }
     
     public int GetScore()
@@ -45,18 +55,33 @@ public class Player : NetworkBehaviour
         if (isServer)
         {
             _score += value;
+            if (_score >= _countScoreToWin)
+            {
+                EventStreams.Game.Publish(new PlayerWonEvent(this));
+            }
         }
         else
         {
             CmdIncreaseScore(value);
         }
-
-        if (_score >= _countScoreToWin)
-        {
-            EventStreams.Game.Publish(new PlayerWonEvent(this));
-        }
     }
 
+    public void RestScore()
+    {
+        if (isServer)
+        {
+            _score = 0;
+            if (_isInvincible)
+            {
+                ChangeState();
+            }
+        }
+        else
+        {
+            CmdResetScore();
+        }
+    }
+    
     public string GetName()
     {
         return _name;
@@ -81,6 +106,7 @@ public class Player : NetworkBehaviour
             _playerCamera = FindObjectOfType<CinemachineFreeLook>();
             _playerCamera.Follow = transform;
             _playerCamera.LookAt = transform;
+            StartPosition = transform.position;
         }
     }
     
@@ -93,6 +119,20 @@ public class Player : NetworkBehaviour
     private void CmdIncreaseScore(int value)
     {
         _score += value;
+        if (_score >= _countScoreToWin)
+        {
+            EventStreams.Game.Publish(new PlayerWonEvent(this));
+        }
+    }
+
+    [Command]
+    private void CmdResetScore()
+    {
+        _score = 0;
+        if (_isInvincible)
+        {
+            RpcChangeState();
+        }
     }
 
     private void OnNameChanged(string oldValue, string newValue)

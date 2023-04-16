@@ -425,6 +425,7 @@ MonoBehaviour:
   _generalScoreScreenController: {fileID: 5321444496024899453}
   _playerNameScreenController: {fileID: 2082841839}
   _winScreenController: {fileID: 249705908}
+  _restartTime: 2
 --- !u!114 &138212196
 MonoBehaviour:
   m_ObjectHideFlags: 0
