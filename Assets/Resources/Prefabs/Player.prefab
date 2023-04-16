@@ -112,6 +112,7 @@ GameObject:
   - component: {fileID: 4130326619191492912}
   - component: {fileID: 7590780658086748057}
   - component: {fileID: 7920128134998499882}
+  - component: {fileID: 3430317941881360059}
   - component: {fileID: 4130326619191492879}
   - component: {fileID: 4833108018423712369}
   - component: {fileID: 3623465489065564986}
@@ -223,7 +224,6 @@ MonoBehaviour:
   _durationJerk: 1
   _colorDelay: 3
   _specialColor: {r: 0, g: 0, b: 0, a: 1}
-  _defaultColor: {r: 1, g: 1, b: 1, a: 1}
 --- !u!114 &7920128134998499882
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -239,9 +239,26 @@ MonoBehaviour:
   syncDirection: 0
   syncMode: 0
   syncInterval: 0
+  _defaultColor: {r: 1, g: 1, b: 1, a: 1}
   _skill: {fileID: 7590780658086748057}
   _renderer: {fileID: 4130326619191492913}
   _collider: {fileID: 4130326619191492912}
+  _scoreController: {fileID: 3430317941881360059}
+--- !u!114 &3430317941881360059
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4130326619191492878}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b9cb94469d8a48b6990257bd381facb2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  syncDirection: 0
+  syncMode: 0
+  syncInterval: 0
   _countScoreToWin: 3
 --- !u!114 &4130326619191492879
 MonoBehaviour:
