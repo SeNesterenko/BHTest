@@ -1299,7 +1299,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4cadec6cccdb409aaa2a7a32402ec56d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _restartTime: 2
+  _restartTime: 5
 --- !u!1 &777660405
 GameObject:
   m_ObjectHideFlags: 3
