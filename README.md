@@ -1,5 +1,5 @@
 #### Sergei Nesterenko
-+ **Build BHTest.zip
++ Build BHTest.zip
 
 ### **Задание:** 
 + **1. Игровая сессия**
