@@ -2,7 +2,7 @@ using Mirror;
 using UnityEngine;
 using UnityEngine.Events;
 
-namespace Player
+namespace PlayerEntity
 {
     public class PlayerManagement : NetworkBehaviour
     {

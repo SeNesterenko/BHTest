@@ -3,12 +3,13 @@ using DG.Tweening;
 using GlobalConstants;
 using Mirror;
 using UnityEngine;
+using PlayerEntity;
 
 namespace Skills
 {
     public class JerkSkill : Skill
     {
-        [SerializeField] private Player.Player _player;
+        [SerializeField] private Player _player;
     
         [SerializeField] private float _distanceJerk = 10f;
         [SerializeField] private float _durationJerk = 1f;
@@ -42,7 +43,7 @@ namespace Skills
         [Command]
         private void CmdChangePlayerColor(uint playerId)
         {
-            var player = NetworkServer.spawned[playerId].gameObject.GetComponent<Player.Player>();
+            var player = NetworkServer.spawned[playerId].gameObject.GetComponent<Player>();
 
             player.RpcChangeState();
             RpcChangePlayerColor(player, _specialColor);
@@ -51,13 +52,13 @@ namespace Skills
     
     
         [ClientRpc]
-        private void RpcChangePlayerColor(Player.Player player, Color color)
+        private void RpcChangePlayerColor(Player player, Color color)
         {
             var playerRenderer = player.Renderer;
             playerRenderer.material.color = color;
         }
     
-        private IEnumerator ResetPlayerColor(Player.Player player)
+        private IEnumerator ResetPlayerColor(Player player)
         {
             yield return new WaitForSeconds(_colorDelay);
         

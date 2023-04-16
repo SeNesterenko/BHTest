@@ -1,12 +1,13 @@
 using SimpleEventBus.Events;
+using PlayerEntity;
 
 namespace Events
 {
     public class PlayerWonEvent : EventBase
     {
-        public Player.Player Player { get; }
+        public Player Player { get; }
 
-        public PlayerWonEvent(Player.Player player)
+        public PlayerWonEvent(Player player)
         {
             Player = player;
         }

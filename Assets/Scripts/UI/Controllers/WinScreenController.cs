@@ -1,5 +1,6 @@
 using UI.Views;
 using UnityEngine;
+using PlayerEntity;
 
 namespace UI.Controllers
 {
@@ -8,7 +9,7 @@ namespace UI.Controllers
     {
         [SerializeField] private WinScreenView _winScreenView;
 
-        public void Initialize(Player.Player player)
+        public void Initialize(Player player)
         {
             _winScreenView.Display(player.GetName());
         }

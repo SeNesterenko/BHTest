@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using UI.Views;
 using UnityEngine;
+using PlayerEntity;
 
 namespace UI.Controllers
 {
@@ -9,9 +10,9 @@ namespace UI.Controllers
     {
         [SerializeField] private GeneralScoreScreenView _generalScoreScreenView;
     
-        private List<Player.Player> _players = new();
+        private List<Player> _players = new();
 
-        public void ChangeCountPlayers(List<Player.Player> players)
+        public void ChangeCountPlayers(List<Player> players)
         {
             _generalScoreScreenView.ResetScoreViews();
             _players = players;

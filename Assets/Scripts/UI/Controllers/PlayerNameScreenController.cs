@@ -2,6 +2,7 @@ using System;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using PlayerEntity;
 
 namespace UI.Controllers
 {
@@ -10,10 +11,10 @@ namespace UI.Controllers
         [SerializeField] private TMP_InputField _inputField;
         [SerializeField] private Button _activatePlayerButton;
 
-        private Player.Player _player;
-        private Action<Player.Player, string> _activatePlayerButtonClicked;
+        private Player _player;
+        private Action<Player, string> _activatePlayerButtonClicked;
 
-        public void Initialize(Player.Player player, Action<Player.Player, string> activatePlayerButtonClicked)
+        public void Initialize(Player player, Action<Player, string> activatePlayerButtonClicked)
         {
             _activatePlayerButtonClicked = activatePlayerButtonClicked;
             _player = player;

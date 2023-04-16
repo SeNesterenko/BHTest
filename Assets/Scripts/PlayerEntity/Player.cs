@@ -6,7 +6,7 @@ using Mirror;
 using Skills;
 using UnityEngine;
 
-namespace Player
+namespace PlayerEntity
 {
     public class Player : NetworkBehaviour
     {

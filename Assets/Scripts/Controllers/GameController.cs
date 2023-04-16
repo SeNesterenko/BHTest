@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using Events;
 using Mirror;
+using PlayerEntity;
 using SimpleEventBus.Disposables;
 using UI.Controllers;
 using UnityEngine;
@@ -15,10 +16,10 @@ namespace Controllers
         [SerializeField] private WinScreenController _winScreenController;
         [SerializeField] private PlayerRespawnController _playerRespawnController;
 
-        private List<Player.Player> _players = new ();
+        private List<Player> _players = new ();
         private CompositeDisposable _subscriptions;
 
-        public void AddNewPlayer(Player.Player player)
+        public void AddNewPlayer(Player player)
         {
             _players.Add(player);
         
@@ -38,24 +39,24 @@ namespace Controllers
         }
 
         [ClientRpc]
-        private void RpcInitializePlayerNameInputController(Player.Player player)
+        private void RpcInitializePlayerNameInputController(Player player)
         {
             _playerNameScreenController.Initialize(player, ActivatePlayer);
         }
     
         [ClientRpc]
-        private void RpcChangeCountPlayersForAllPlayers(List<Player.Player> players)
+        private void RpcChangeCountPlayersForAllPlayers(List<Player> players)
         {
             _generalScoreScreenController.ChangeCountPlayers(players);
         }
 
         [ClientRpc]
-        private void RpcTransferPlayersListToClients(List<Player.Player> players)
+        private void RpcTransferPlayersListToClients(List<Player> players)
         {
             _players = players;
         }
     
-        private void ActivatePlayer(Player.Player player, string playerName)
+        private void ActivatePlayer(Player player, string playerName)
         {
             player.SetName(playerName);
             _playerNameScreenController.gameObject.SetActive(false);
@@ -66,13 +67,13 @@ namespace Controllers
             EndGame(eventData.Player);
         }
     
-        private void EndGame(Player.Player player)
+        private void EndGame(Player player)
         {
             RpcEndGame(player);
         }
 
         [ClientRpc]
-        private void RpcEndGame(Player.Player player)
+        private void RpcEndGame(Player player)
         {
             _winScreenController.gameObject.SetActive(true);
         
