@@ -87,6 +87,7 @@ namespace PlayerEntity
                 ChangeState();
             }
         
+            if (!isLocalPlayer) return;
             transform.position = _startPosition;
         }
 
