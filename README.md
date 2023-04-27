@@ -1,4 +1,6 @@
 #### Sergei Nesterenko
++ Build: BHTest.zip
++ [Короткое видео fixed версии] https://youtu.be/bYKUzc2dEn8
 
 ### **Задание:** 
 + **1. Игровая сессия**
